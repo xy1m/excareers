@@ -45,11 +45,11 @@
 			<generatedKey column="id" sqlStatement="MySql" identity="true"
 				type="post" />
 		</table>
-		<table tableName="company" enableSelectByExample="false"
+<!-- 		<table tableName="company" enableSelectByExample="false"
 			enableDeleteByExample="false" enableCountByExample="false"
 			enableUpdateByExample="false">
 			<generatedKey column="id" sqlStatement="MySql" identity="true"
 				type="post" />
-		</table>
+		</table> -->
 	</context>
 </generatorConfiguration>

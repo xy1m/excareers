@@ -21,6 +21,7 @@ public class Employee {
 
     private Integer valid;
 
+    private Integer status;
     private String  companyName;
 
     private String  companyLogo;
@@ -111,5 +112,13 @@ public class Employee {
 
     public void setValid(Integer valid) {
         this.valid = valid;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

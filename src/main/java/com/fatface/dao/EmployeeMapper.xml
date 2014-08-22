@@ -11,14 +11,15 @@
     <result column="ctime" property="ctime" jdbcType="TIMESTAMP" />
     <result column="utime" property="utime" jdbcType="TIMESTAMP" />
     <result column="valid" property="valid" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, empno, cid, name, comment, pic, ctime, utime, valid
+    id, empno, cid, name, comment, pic, ctime, utime, valid, status
   </sql>
   <!-- 查询所有员工 -->  
   <select id="selectAll" resultType="com.fatface.data.Employee">
     select 
-    e.id, e.empno, e.cid, e.name, e.comment, e.pic, e.ctime, e.utime, e.valid,
+    e.id, e.empno, e.cid, e.name, e.comment, e.pic, e.ctime, e.utime, e.status,e.valid,
     c.name companyName,c.logo companyLogo
     from employee e,company c
     where e.cid = c.id 
@@ -41,10 +42,12 @@
     </selectKey>
     insert into employee (empno, cid, name, 
       comment, pic, ctime, 
-      utime, valid)
+      utime, valid, status
+      )
     values (#{empno,jdbcType=VARCHAR}, #{cid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{comment,jdbcType=VARCHAR}, #{pic,jdbcType=VARCHAR}, #{ctime,jdbcType=TIMESTAMP}, 
-      #{utime,jdbcType=TIMESTAMP}, #{valid,jdbcType=INTEGER})
+      #{utime,jdbcType=TIMESTAMP}, #{valid,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.fatface.data.Employee" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -76,6 +79,9 @@
       <if test="valid != null" >
         valid,
       </if>
+      <if test="status != null" >
+        status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="empno != null" >
@@ -101,6 +107,9 @@
       </if>
       <if test="valid != null" >
         #{valid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -131,6 +140,9 @@
       <if test="valid != null" >
         valid = #{valid,jdbcType=INTEGER},
       </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -143,7 +155,8 @@
       pic = #{pic,jdbcType=VARCHAR},
       ctime = #{ctime,jdbcType=TIMESTAMP},
       utime = #{utime,jdbcType=TIMESTAMP},
-      valid = #{valid,jdbcType=INTEGER}
+      valid = #{valid,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
