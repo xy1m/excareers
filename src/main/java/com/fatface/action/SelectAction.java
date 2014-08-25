@@ -17,7 +17,7 @@ import com.fatface.dao.CompanyMapper;
 import com.fatface.dao.EmployeeMapper;
 import com.fatface.data.Company;
 import com.fatface.data.Employee;
-import com.fatface.util.FileUtils;
+import com.fatface.util.QiniuFileUtils;
 import com.google.common.base.Joiner;
 
 @Controller
@@ -61,7 +61,7 @@ public class SelectAction {
         String suffix = fileName.substring(fileName.lastIndexOf("."), fileName.length());
         String picUrl = null;
         try {
-            picUrl = FileUtils.upload(picKey + "." + suffix, pic.getInputStream());
+            picUrl = QiniuFileUtils.upload(picKey + "." + suffix, pic.getInputStream());
         } catch (IOException e) {
             logger.error("上传文件IO错误", e);
         }
