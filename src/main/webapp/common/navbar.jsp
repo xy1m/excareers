@@ -18,6 +18,12 @@
 					<ul class="nav navbar-nav">
 						<li><a href="/select/index"><span class="glyphicon glyphicon-search"></span>Galley</a></li>
 						<li><a href="/oper/index"><span class="glyphicon glyphicon-edit"></span>上传</a></li>
+						<li><a href="/user/login"><span class="glyphicon glyphicon-edit"></span>登录</a></li>
+						
+						<li><a href="/user/i1"><span class="glyphicon glyphicon-edit"></span>更新</a></li>
+						<li><a href="/user/i2"><span class="glyphicon glyphicon-edit"></span>联系人</a></li>
+						<li><a href="/user/i3"><span class="glyphicon glyphicon-edit"></span>公司</a></li>
+						<li><a href="/user/i4"><span class="glyphicon glyphicon-edit"></span>分享</a></li>
 					</ul>
 				</div>
 				<!--/.nav-collapse -->
