@@ -18,12 +18,17 @@
 					<ul class="nav navbar-nav">
 						<li><a href="/select/index"><span class="glyphicon glyphicon-search"></span>Galley</a></li>
 						<li><a href="/oper/index"><span class="glyphicon glyphicon-edit"></span>上传</a></li>
-						<li><a href="/user/login"><span class="glyphicon glyphicon-edit"></span>登录</a></li>
-						
-						<li><a href="/user/i1"><span class="glyphicon glyphicon-edit"></span>更新</a></li>
-						<li><a href="/user/i2"><span class="glyphicon glyphicon-edit"></span>联系人</a></li>
-						<li><a href="/user/i3"><span class="glyphicon glyphicon-edit"></span>公司</a></li>
-						<li><a href="/user/i4"><span class="glyphicon glyphicon-edit"></span>分享</a></li>
+						<li><a href="/linkedin/upload"><span class="glyphicon glyphicon-edit"></span>LinkedIn</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li id="loginBtn"><a href="javascript:void(0);"><script type="IN/Login" data-onAuth="showOrHide"></script></a></li>
+						<li id="meBtn" class="dropdown" style="display:none">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Me<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="/user/login">LinkedIn</a></li>
+								<li><a href="/user/logout">Logout</a></li>
+							</ul>
+						</li>
 					</ul>
 				</div>
 				<!--/.nav-collapse -->

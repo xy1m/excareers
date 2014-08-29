@@ -15,7 +15,7 @@
 function loadData() {
 IN.API.Profile("me")
    .result(function(result) { 
-      $("#profile").html("<script type='IN/FullMemberProfile' data-id='" + result.values[0].id + "'></script>");
+      $("#profile").html("<script type='IN/FullMemberProfile' data-id='" + result.values[0].id + "'/>");
       IN.parse(document.getElementById("profile"))
    })
 }

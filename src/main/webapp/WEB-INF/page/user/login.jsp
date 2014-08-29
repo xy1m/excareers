@@ -1,30 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%-- <%@ include file="/common/header.jsp"%> --%>
-<!DOCTYPE html>
-<html>
-<head>
-<script type="text/javascript" src="https://platform.linkedin.com/in.js">
-	api_key: 75behd12ztnmus
-	authorize: true
-</script>
-
-<script type="text/javascript">
-function onLinkedInAuth() {
-  IN.API.Profile("me")
-    .result( function(me) {
-      var id = me.values[0].id;
-      // AJAX call to pass back id to your server
-    });
+<%@ include file="/common/header.jsp"%>
+	<div id="profile"></div>
+	<a href="javascript:getFullProfile()">点击</a>
+<%@ include file="/common/footer.jsp"%>
+<script>
+function getFullProfile(){
+	   IN.API.Profile("me").result(function(result) { 
+	      $("#profile").html("<script type='IN/FullMemberProfile' data-id='" + result.values[0].id + "'/>");
+	      IN.parse(document.getElementById("profile"));
+	   });
 }
-</script>
-</head>
-<body>
-	<script type="in/Login">
-Hello, <?js= firstName ?> <?js= lastName ?>.
+window.onload=getFullProfile();
 </script>
 
-<script type="IN/Login" data-onAuth="onLinkedInAuth"></script>
-</body>
-</html>
-<%-- <%@ include file="/common/footer.jsp"%> --%>

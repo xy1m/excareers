@@ -1,132 +1,55 @@
 package com.fatface.action;
 
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
-
-import org.scribe.builder.ServiceBuilder;
-import org.scribe.model.OAuthRequest;
-import org.scribe.model.Response;
-import org.scribe.model.Token;
-import org.scribe.model.Verb;
-import org.scribe.model.Verifier;
-import org.scribe.oauth.OAuthService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fatface.dao.CompanyMapper;
+import com.fatface.data.Company;
 import com.fatface.util.CookieUtils;
-import com.fatface.util.LinkedIn2Api;
 
 @Controller
 public class LoginAction {
 
-    public static final String PROTECTED_RESOURCE_URL = "https://api.linkedin.com/v1/people/~";
-    public static final String API_KEY                = "75behd12ztnmus";
-    public static final String SECRET                 = "EBono1sp6nfbshXw";
-    public static final Token  EMPTY_TOKEN            = null;
-    public static final String CALLBACK_URL           = "http://127.0.0.1/linkedin/redirect";
+    @Resource
+    private CompanyMapper companyMapper;
 
-    private OAuthService       service                = new ServiceBuilder()
-                                                          .provider(LinkedIn2Api.class)
-                                                          .apiKey(API_KEY).apiSecret(SECRET)
-                                                          .callback(CALLBACK_URL).build();
-
-    @RequestMapping(value = "/user/login")
-    public ModelAndView login() {
+    @RequestMapping("/user/login")
+    public ModelAndView index() {
         ModelAndView mav = new ModelAndView("/user/login");
-        String state = UUID.randomUUID().toString();
-        String authorizationURL = service.getAuthorizationUrl(EMPTY_TOKEN);
-        String linkedInURL = authorizationURL + "&state=" + state;
-
-        mav.addObject("linkedInURL", linkedInURL);
         return mav;
     }
 
-    @RequestMapping(value = "/linkedin/redirect")
-    public ModelAndView redirect(String code, String state, HttpServletResponse res) {
-        ModelAndView mav = new ModelAndView("/user/profile");
-        Verifier verifier = new Verifier(code);
-        Token accessToken = service.getAccessToken(EMPTY_TOKEN, verifier);
+    @RequestMapping("/user/login4linkedin")
+    @ResponseBody
+    public Map<String, String> login4LinkedIn(String id, String firstName, String lastName,
+                                              String pictureUrl, HttpServletResponse response) {
+        Map<String, String> map = new HashMap<String, String>();
+        CookieUtils.addCookie(response, "id", id);
+        CookieUtils.addCookie(response, "firstName", firstName);
+        CookieUtils.addCookie(response, "lastName", lastName);
+        CookieUtils.addCookie(response, "pictureUrl", pictureUrl);
+        return map;
+    }
 
-        CookieUtils.addCookie(res, "access_token", accessToken.getToken());
-
-        OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
-        request.addHeader("x-li-format", "json");
-        request.addQuerystringParameter("oauth2_access_token", accessToken.getToken());
-        Response response = request.send();
-        mav.addObject("basic", response.getBody());
+    @RequestMapping(value = "/linkedin/upload")
+    public ModelAndView oper(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("/oper/upload4linkedin");
+        List<Company> companyList = companyMapper.selectAll();
+        mav.addObject("result", companyList);
+        mav.addObject("id", CookieUtils.getCookie(request, "id"));
+        mav.addObject("firstName", CookieUtils.getCookie(request, "firstName"));
+        mav.addObject("lastName", CookieUtils.getCookie(request, "lastName"));
+        mav.addObject("pictureUrl", CookieUtils.getCookie(request, "pictureUrl"));
         return mav;
-    }
-
-    @RequestMapping(value = "/user/i1")
-    @ResponseBody
-    public String i1(HttpServletRequest req) {
-        OAuthRequest request = new OAuthRequest(Verb.GET,
-            "https://api.linkedin.com/v1/people/~/network/updates");
-        request.addHeader("x-li-format", "json");
-        String access_token = CookieUtils.getCookie(req, "access_token");
-        request.addQuerystringParameter("oauth2_access_token", access_token);
-        Response response = request.send();
-        return response.getBody();
-    }
-
-    @RequestMapping(value = "/user/i2")
-    @ResponseBody
-    public String i2(HttpServletRequest req) {
-        OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
-        request.addHeader("x-li-format", "json");
-        String access_token = CookieUtils.getCookie(req, "access_token");
-        request.addQuerystringParameter("oauth2_access_token", access_token);
-        Response response = request.send();
-        return response.getBody();
-    }
-
-    @RequestMapping(value = "/user/i3")
-    @ResponseBody
-    public String i3(HttpServletRequest req) {
-        OAuthRequest request = new OAuthRequest(Verb.GET,
-            "https://api.linkedin.com/v1/companies/1337");
-        request.addHeader("x-li-format", "json");
-        String access_token = CookieUtils.getCookie(req, "access_token");
-        request.addQuerystringParameter("oauth2_access_token", access_token);
-        System.out.println(access_token);
-        Response response = request.send();
-        return response.getBody();
-    }
-
-    @RequestMapping(value = "/user/i4")
-    @ResponseBody
-    public String i4(HttpServletRequest req) {
-        OAuthRequest request = new OAuthRequest(Verb.POST,
-            "https://api.linkedin.com/v1/people/~/shares");
-        request.addHeader("x-li-format", "json");
-        request.addHeader("Content-Type", "application/json");
-
-        String access_token = CookieUtils.getCookie(req, "access_token");
-        request.addQuerystringParameter("oauth2_access_token", access_token);
-
-        JSONObject share = new JSONObject();
-        share.put("comment", "Posting from the API using JSON");
-
-        JSONObject contentObject = new JSONObject();
-        contentObject.put("title", "from LinkedIn API share program");
-        contentObject.put("description", "auto send by program");
-        contentObject.put("submitted-url", "https://github.com/CrazyMole");
-        contentObject.put("submitted-image-url", "https://avatars0.githubusercontent.com/u/3718563?v=2&s=460");
-
-        share.put("content", contentObject);
-
-        JSONObject visibilityObject = new JSONObject();
-        visibilityObject.put("code", "anyone");
-
-        share.put("visibility", visibilityObject);
-        request.addPayload(share.toString());
-        Response response = request.send();
-        return response.getBody();
     }
 }
