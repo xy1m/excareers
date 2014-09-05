@@ -1,16 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
-<link href="/static/bootstrap3.03/css/signin.css" rel="stylesheet">
-
+<link href="/static/bootstrap3.03/css/signin.css" rel="stylesheet">	
 <%@ include file="/common/header.jsp"%>
-	<div class="container">
-	    <form class="form-signin" role="form">
-	    	<p>建议使用LinkedIn登录</p>
-	    	<button class="btn btn-primary"><script type="IN/Login" data-onAuth="onLogin" data></script></button>
-	     
-	    </form>
-    </div>
+    <form class="form-signin" role="form">
+    	<p>建议使用LinkedIn登录</p>
+    	<button class="btn btn-primary"><script type="IN/Login" data-onAuth="onLogin" data></script></button>
+     
+    </form>
 <%@ include file="/common/footer.jsp"%>
 
 <script type="text/javascript" src="http://platform.linkedin.com/in.js">
