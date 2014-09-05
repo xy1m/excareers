@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<!-- Fixed navbar -->
 		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 			<div class="container">
 				<div class="navbar-header">
@@ -26,5 +27,6 @@
 						</li>
 					</ul>
 				</div>
+				<!--/.nav-collapse -->
 			</div>
 		</div>
