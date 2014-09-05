@@ -14,15 +14,11 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fatface.util.CookieUtils;
 import com.fatface.util.LinkedIn2Api;
 
-//@Controller
 public class TestAction {
 
     public static final String PROTECTED_RESOURCE_URL = "https://api.linkedin.com/v1/people/~";
@@ -36,7 +32,6 @@ public class TestAction {
                                                           .apiKey(API_KEY).apiSecret(SECRET)
                                                           .callback(CALLBACK_URL).build();
 
-    //@RequestMapping(value = "/user/login")
     public ModelAndView login() {
         ModelAndView mav = new ModelAndView("/user/login");
         String state = UUID.randomUUID().toString();
@@ -46,7 +41,6 @@ public class TestAction {
         return mav;
     }
 
-    //@RequestMapping(value = "/linkedin/redirect")
     public ModelAndView redirect(String code, String state, HttpServletResponse res) {
         ModelAndView mav = new ModelAndView("/user/profile");
         Verifier verifier = new Verifier(code);
@@ -62,9 +56,7 @@ public class TestAction {
         return mav;
     }
 
-    //@RequestMapping(value = "/user/updates")
-    //@ResponseBody
-    public String i1(HttpServletRequest req) {
+    public String testUpdate(HttpServletRequest req) {
         OAuthRequest request = new OAuthRequest(Verb.GET,
             "https://api.linkedin.com/v1/people/~/network/updates");
         request.addHeader("x-li-format", "json");
@@ -74,9 +66,7 @@ public class TestAction {
         return response.getBody();
     }
 
-    //@RequestMapping(value = "/user/company")
-    //@ResponseBody
-    public String i3(HttpServletRequest req) {
+    public String testCompany(HttpServletRequest req) {
         OAuthRequest request = new OAuthRequest(Verb.GET,
             "https://api.linkedin.com/v1/companies/1337");
         request.addHeader("x-li-format", "json");
@@ -87,9 +77,7 @@ public class TestAction {
         return response.getBody();
     }
 
-    @RequestMapping(value = "/user/shares")
-    @ResponseBody
-    public String i4(HttpServletRequest req) {
+    public String testShare(HttpServletRequest req) {
         OAuthRequest request = new OAuthRequest(Verb.POST,
             "https://api.linkedin.com/v1/people/~/shares");
         request.addHeader("x-li-format", "json");

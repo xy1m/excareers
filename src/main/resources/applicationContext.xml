@@ -25,23 +25,23 @@
 	<!--将dataSource的内容自动注入 -->
 	<context:property-placeholder location="classpath*:*.properties" />
 	<!-- 数据源 -->
-	<bean id="commonDataSourceProperties" abstract="true" destroy-method="close">
+	<bean id="commonDataSourceProperties" abstract="true"
+		destroy-method="close">
 		<property name="driverClass" value="${jdbc.driver.mysql}" />
 		<property name="jdbcUrl" value="${jdbc.url}" />
 		<property name="user" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
-		<!-- 以下参数是根据SAE情况配置 -->
 		<property name="maxPoolSize" value="20" />
 		<property name="minPoolSize" value="5" />
 		<property name="maxStatements" value="200" />
 		<property name="initialPoolSize" value="5" />
-		<property name="maxIdleTime" value="10" />
+		<property name="maxIdleTime" value="60" />
 		<property name="idleConnectionTestPeriod" value="10" />
 		<property name="testConnectionOnCheckin" value="false" />
 		<property name="testConnectionOnCheckout" value="false" />
 		<property name="preferredTestQuery" value="SELECT 1 " />
 	</bean>
-		  
+
 	<!-- 数据源 master -->
 	<bean id="targetDataSource" parent="commonDataSourceProperties"
 		class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
@@ -56,7 +56,7 @@
 		<property name="user" value="${jdbc.username.read}" />
 		<property name="password" value="${jdbc.password.read}" />
 	</bean>
-	
+
 	<!-- <bean id="commonDataSourceProperties" abstract="true" destroy-method="close"> 
 		数据库驱动 <property name="driverClass" value="${jdbc.driver.mysql}" /> <property 
 		name="jdbcUrl" value="${jdbc.url}" /> <property name="username" value="${jdbc.username}" 
@@ -68,23 +68,15 @@
 		每次去拿数据库连接的时候一次性要拿几个,默认值：2 <property name="acquireIncrement" value="2" /> 
 		缓存prepared statements的大小，默认值：0 <property name="statementsCacheSize" value="30" 
 		/> 每个分区释放链接助理进程的数量，默认值：3，除非你的一个数据库连接的时间内做了很多工作，不然过多的助理进程会影响你的性能 <property 
-		name="releaseHelperThreads" value="3" /> </bean> 
+		name="releaseHelperThreads" value="3" /> </bean> 数据源 master <bean id="targetDataSource" 
+		parent="commonDataSourceProperties" class="com.jolbox.bonecp.BoneCPDataSource" 
+		destroy-method="close"> <property name="jdbcUrl" value="${jdbc.url}" /> <property 
+		name="username" value="${jdbc.username}" /> <property name="password" value="${jdbc.password}" 
+		/> </bean> 数据源 slave <bean id="targetDataSource-read" parent="commonDataSourceProperties" 
+		class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close"> <property 
+		name="jdbcUrl" value="${jdbc.url.read}" /> <property name="username" value="${jdbc.username.read}" 
+		/> <property name="password" value="${jdbc.password.read}" /> </bean> -->
 
-	数据源 master
-	<bean id="targetDataSource" parent="commonDataSourceProperties"
-		class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
-		<property name="jdbcUrl" value="${jdbc.url}" />
-		<property name="username" value="${jdbc.username}" />
-		<property name="password" value="${jdbc.password}" />
-	</bean>
-	数据源 slave
-	<bean id="targetDataSource-read" parent="commonDataSourceProperties"
-		class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
-		<property name="jdbcUrl" value="${jdbc.url.read}" />
-		<property name="username" value="${jdbc.username.read}" />
-		<property name="password" value="${jdbc.password.read}" />
-	</bean> -->
-	
 	<bean id="readWriteDataSource" class="com.fatface.datasource.ReadWriteDataSource">
 		<property name="writeDataSource" ref="targetDataSource" />
 		<property name="readDataSourceMap">

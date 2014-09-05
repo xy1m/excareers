@@ -1,12 +1,12 @@
 package com.fatface.datasource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.datasource.AbstractDataSource;
 import org.springframework.util.CollectionUtils;
 
 import javax.sql.DataSource;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * </pre>  
  */
 public class ReadWriteDataSource extends AbstractDataSource implements InitializingBean {
-    private static final Logger     log     = LoggerFactory.getLogger(ReadWriteDataSource.class);
+    private static final Logger     log     = Logger.getLogger(ReadWriteDataSource.class);
 
     private DataSource              writeDataSource;
     private Map<String, DataSource> readDataSourceMap;
@@ -95,7 +95,7 @@ public class ReadWriteDataSource extends AbstractDataSource implements Initializ
 
         String dataSourceName = readDataSourceNames[index];
 
-        log.debug("current determine read datasource : {}", dataSourceName);
+        log.debug("current determine read datasource : {}" + dataSourceName);
 
         return readDataSources[index];
     }

@@ -5,42 +5,25 @@ import java.util.Date;
 public class Employee {
     private Integer id;
 
-    private String  empno;
+    private String name;
 
-    private Integer cid;
+    private String empno;
 
-    private String  name;
+    private Integer companyId;
 
-    private String  comment;
+    private String companyName;
 
-    private String  pic;
+    private String pic;
 
-    private Date    ctime;
+    private String comment;
 
-    private Date    utime;
+    private Date ctime;
 
-    private Integer valid;
+    private Date utime;
 
     private Integer status;
-    private String  companyName;
 
-    private String  companyLogo;
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getCompanyLogo() {
-        return companyLogo;
-    }
-
-    public void setCompanyLogo(String companyLogo) {
-        this.companyLogo = companyLogo;
-    }
+    private Integer valid;
 
     public Integer getId() {
         return id;
@@ -48,22 +31,6 @@ public class Employee {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getEmpno() {
-        return empno;
-    }
-
-    public void setEmpno(String empno) {
-        this.empno = empno;
-    }
-
-    public Integer getCid() {
-        return cid;
-    }
-
-    public void setCid(Integer cid) {
-        this.cid = cid;
     }
 
     public String getName() {
@@ -74,12 +41,28 @@ public class Employee {
         this.name = name;
     }
 
-    public String getComment() {
-        return comment;
+    public String getEmpno() {
+        return empno;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setEmpno(String empno) {
+        this.empno = empno;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getPic() {
@@ -88,6 +71,14 @@ public class Employee {
 
     public void setPic(String pic) {
         this.pic = pic;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Date getCtime() {
@@ -106,19 +97,19 @@ public class Employee {
         this.utime = utime;
     }
 
-    public Integer getValid() {
-        return valid;
-    }
-
-    public void setValid(Integer valid) {
-        this.valid = valid;
-    }
-
     public Integer getStatus() {
         return status;
     }
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getValid() {
+        return valid;
+    }
+
+    public void setValid(Integer valid) {
+        this.valid = valid;
     }
 }

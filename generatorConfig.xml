@@ -25,31 +25,17 @@
 			<property name="rootInterface" value="com.fatface.dao.SqlMapper" />
 		</javaClientGenerator>
 
-		<!-- table batch modify -->
-
-<!-- 		<table tableName="user" enableSelectByExample="false"
+		<table tableName="user" enableSelectByExample="false"
 			enableDeleteByExample="false" enableCountByExample="false"
 			enableUpdateByExample="false">
 			<generatedKey column="id" sqlStatement="MySql" identity="true"
 				type="post" />
 		</table>
-		<table tableName="guest" enableSelectByExample="false"
-			enableDeleteByExample="false" enableCountByExample="false"
-			enableUpdateByExample="false">
-			<generatedKey column="id" sqlStatement="MySql" identity="true"
-				type="post" />
-		</table> -->
 		<table tableName="employee" enableSelectByExample="false"
 			enableDeleteByExample="false" enableCountByExample="false"
 			enableUpdateByExample="false">
 			<generatedKey column="id" sqlStatement="MySql" identity="true"
 				type="post" />
 		</table>
-<!-- 		<table tableName="company" enableSelectByExample="false"
-			enableDeleteByExample="false" enableCountByExample="false"
-			enableUpdateByExample="false">
-			<generatedKey column="id" sqlStatement="MySql" identity="true"
-				type="post" />
-		</table> -->
 	</context>
 </generatorConfiguration>

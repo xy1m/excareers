@@ -3,28 +3,25 @@
 <mapper namespace="com.fatface.dao.EmployeeMapper" >
   <resultMap id="BaseResultMap" type="com.fatface.data.Employee" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="empno" property="empno" jdbcType="VARCHAR" />
-    <result column="cid" property="cid" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="empno" property="empno" jdbcType="VARCHAR" />
+    <result column="company_id" property="companyId" jdbcType="INTEGER" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
     <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
     <result column="ctime" property="ctime" jdbcType="TIMESTAMP" />
     <result column="utime" property="utime" jdbcType="TIMESTAMP" />
-    <result column="valid" property="valid" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="valid" property="valid" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, empno, cid, name, comment, pic, ctime, utime, valid, status
+    id, name, empno, company_id, company_name, pic, comment, ctime, utime, status, valid
   </sql>
-  <!-- 查询所有员工 -->  
-  <select id="selectAll" resultType="com.fatface.data.Employee">
+  <select id="selectAll" resultMap="BaseResultMap">
     select 
-    e.id, e.empno, e.cid, e.name, e.comment, e.pic, e.ctime, e.utime, e.status,e.valid,
-    c.name companyName,c.logo companyLogo
-    from employee e,company c
-    where e.cid = c.id 
-    and e.valid = 1
-    and c.valid = 1
+	<include refid="Base_Column_List" />
+    from employee
+    where status = 1 and valid = 1
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -40,14 +37,14 @@
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into employee (empno, cid, name, 
-      comment, pic, ctime, 
-      utime, valid, status
-      )
-    values (#{empno,jdbcType=VARCHAR}, #{cid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{comment,jdbcType=VARCHAR}, #{pic,jdbcType=VARCHAR}, #{ctime,jdbcType=TIMESTAMP}, 
-      #{utime,jdbcType=TIMESTAMP}, #{valid,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}
-      )
+    insert into employee (name, empno, company_id, 
+      company_name, pic, comment, 
+      ctime, utime, status, 
+      valid)
+    values (#{name,jdbcType=VARCHAR}, #{empno,jdbcType=VARCHAR}, #{companyId,jdbcType=INTEGER}, 
+      #{companyName,jdbcType=VARCHAR}, #{pic,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, 
+      #{ctime,jdbcType=TIMESTAMP}, #{utime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, 
+      #{valid,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.fatface.data.Employee" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
@@ -55,20 +52,23 @@
     </selectKey>
     insert into employee
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="empno != null" >
-        empno,
-      </if>
-      <if test="cid != null" >
-        cid,
-      </if>
       <if test="name != null" >
         name,
       </if>
-      <if test="comment != null" >
-        comment,
+      <if test="empno != null" >
+        empno,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="companyName != null" >
+        company_name,
       </if>
       <if test="pic != null" >
         pic,
+      </if>
+      <if test="comment != null" >
+        comment,
       </if>
       <if test="ctime != null" >
         ctime,
@@ -76,28 +76,31 @@
       <if test="utime != null" >
         utime,
       </if>
-      <if test="valid != null" >
-        valid,
-      </if>
       <if test="status != null" >
         status,
       </if>
+      <if test="valid != null" >
+        valid,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="empno != null" >
-        #{empno,jdbcType=VARCHAR},
-      </if>
-      <if test="cid != null" >
-        #{cid,jdbcType=INTEGER},
-      </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="comment != null" >
-        #{comment,jdbcType=VARCHAR},
+      <if test="empno != null" >
+        #{empno,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="companyName != null" >
+        #{companyName,jdbcType=VARCHAR},
       </if>
       <if test="pic != null" >
         #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
       </if>
       <if test="ctime != null" >
         #{ctime,jdbcType=TIMESTAMP},
@@ -105,31 +108,34 @@
       <if test="utime != null" >
         #{utime,jdbcType=TIMESTAMP},
       </if>
-      <if test="valid != null" >
-        #{valid,jdbcType=INTEGER},
-      </if>
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
+      </if>
+      <if test="valid != null" >
+        #{valid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.fatface.data.Employee" >
     update employee
     <set >
-      <if test="empno != null" >
-        empno = #{empno,jdbcType=VARCHAR},
-      </if>
-      <if test="cid != null" >
-        cid = #{cid,jdbcType=INTEGER},
-      </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="comment != null" >
-        comment = #{comment,jdbcType=VARCHAR},
+      <if test="empno != null" >
+        empno = #{empno,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=INTEGER},
+      </if>
+      <if test="companyName != null" >
+        company_name = #{companyName,jdbcType=VARCHAR},
       </if>
       <if test="pic != null" >
         pic = #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
       </if>
       <if test="ctime != null" >
         ctime = #{ctime,jdbcType=TIMESTAMP},
@@ -137,26 +143,27 @@
       <if test="utime != null" >
         utime = #{utime,jdbcType=TIMESTAMP},
       </if>
-      <if test="valid != null" >
-        valid = #{valid,jdbcType=INTEGER},
-      </if>
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="valid != null" >
+        valid = #{valid,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fatface.data.Employee" >
     update employee
-    set empno = #{empno,jdbcType=VARCHAR},
-      cid = #{cid,jdbcType=INTEGER},
-      name = #{name,jdbcType=VARCHAR},
-      comment = #{comment,jdbcType=VARCHAR},
+    set name = #{name,jdbcType=VARCHAR},
+      empno = #{empno,jdbcType=VARCHAR},
+      company_id = #{companyId,jdbcType=INTEGER},
+      company_name = #{companyName,jdbcType=VARCHAR},
       pic = #{pic,jdbcType=VARCHAR},
+      comment = #{comment,jdbcType=VARCHAR},
       ctime = #{ctime,jdbcType=TIMESTAMP},
       utime = #{utime,jdbcType=TIMESTAMP},
-      valid = #{valid,jdbcType=INTEGER},
-      status = #{status,jdbcType=INTEGER}
+      status = #{status,jdbcType=INTEGER},
+      valid = #{valid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

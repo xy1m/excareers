@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CookieUtils {
 
-    public final static String DOMAIN  = "127.0.0.1";
+    public final static String DOMAIN  = "elasticbeanstalk.com";
     public final static String PATH    = "/";
     public final static int    MAX_AGE = 60 * 60 * 24 * 60;
 

@@ -1,8 +1,3 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ include file="/common/header.jsp"%>
-<div class="row">制作中</div>
-<!-- /.row -->
-<%@ include file="/common/footer.jsp"%>
+<jsp:forward page="/select/index"></jsp:forward>
