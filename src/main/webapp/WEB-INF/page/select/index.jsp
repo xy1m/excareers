@@ -5,12 +5,11 @@
 
 <%@ include file="/common/header.jsp"%>
 			<div class="jumbotron">
-				<div class="container">
-				<h1>111</h1>
-				<p>All is riddle,and the key to a riddle is another riddle...Emerson
-				 riddle,and the key to a riddle is another riddle...Emerson riddle,and the key to a riddle is another riddle...Emerson riddle,and the key to a riddle is another riddle...Emerson riddle,and the key to a riddle is another riddle...Emerson
-				 </p>
-				</div>
+				<h1></h1>
+				<blockquote class="blockquote-reverse">
+					<p>All is riddle,and the key to a riddle is another riddle</p>
+					<p>Emerson</p>
+				</blockquote>
 			</div>
 			<c:forEach var="i" items="${result}" varStatus="index">
 			<div class="col-lg-4">
