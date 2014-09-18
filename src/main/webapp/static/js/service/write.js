@@ -5,8 +5,9 @@
 	        done: function (e, data) {
 	        	if(data.result.status=="success"){
 	        		$.each(data.result.result, function (i, v) {
-	        			$("#photoView").attr("src",v);
-	        			$("#pictureUrl").val(v);
+	        			$("#photoView").attr("src",v+"_z200");
+                        $("#photo").val(v);
+	        			$("#photo").change();
 	        		});
 	        	}else{
 	        		alertMsg("alert-danger",data.result.msg);
@@ -20,104 +21,108 @@
 	});
 	
 	$(document).ready(function() {
-		$('input').iCheck({
-			checkboxClass : 'icheckbox_square-red',
-			radioClass : 'iradio_square-red',
-			increaseArea : '20%' // optional
-		});
-	});
-	
-	function alertMsg(type,msg){
-		$(".alert").removeClass().addClass("alert").addClass(type);
-		$(".alert p").text(msg);
-		$(".alert").show();
-	}
-	
-	function validate(obj){
-		var type = obj[0].type;
-		if($.trim(obj.val())==""){
-			obj.focus();
-			obj.parent().addClass("has-error");
-			obj.next("span").addClass("glyphicon-remove");
-			alertMsg("alert-danger","Please input "+obj.attr("name"));
-			return true;
-		}else if((type=="textarea"&&obj.val().length> 500) || (type!="textarea"&&obj.val().length> 50)){
-			obj.focus();
-			obj.parent().addClass("has-error");
-			obj.next("span").addClass("glyphicon-remove");
-			alertMsg("alert-danger",obj.attr("name")+" too long");
-			return true;
-		}else{
-			obj.parent().removeClass("has-error").addClass("has-success");
-			obj.next("span").removeClass("glyphicon-remove").addClass("glyphicon-ok");
-			$(".alert").hide();
-			return false;
-		}
-	}
-	
-	$(".has-feedback .form-control").on("blur",function(){
-		validate($(this));
-	});
-	
-	$("#submitBtn").click(function(event) {
-		var empname = $("#empname");
-		var comment = $("#comment");
-		var companyName = $("#companyName");
-		var pictureUrl = $("#pictureUrl");
-		if(validate(empname)){
-			return;
-		}
-		
-		var companyChecked = $("input[name='companyId']:checked");
-		var statusChecked = $("input[name='status']:checked");
-		
-		if(companyChecked.length > 0){
-			companyName.val(companyChecked.attr("data-val"));
-		}
-		
-		if(companyName.val() == ""){
-			alertMsg("alert-danger","Please choose your company");
-			return;
-		}
-		
-		if(statusChecked.length == 0){
-			alertMsg("alert-danger","Please choose your work status");
-			return;
-		}
-		if(pictureUrl.val()==""){
-			alertMsg("Please upload a pictureUrl");
-			return;
-		}
-		if(validate(comment)){
-			return;
-		}
-		
-		var btn = $("#submitBtn");
-		btn.attr('disabled','disabled');
-		btn.children("i").addClass("fa fa-refresh fa-spin");
-		
-		var params = {};
-		params["empname"] = empname.val();
-		params["companyId"] = companyChecked.val();
-		params["companyName"] = companyName.val();
-		params["status"] = statusChecked.val();
-		params["comment"] = comment.val();
-		params["pictureUrl"] = pictureUrl.val();
-		
-		$.ajax({
-			type : 'POST',
-			url : "/employee/add",
-			dataType : 'json',
-			data : params,
-			success : function(data) {
-				alertMsg("alert-success","success");
-				window.location.href="/select/index";
-			},
-			error : function(data) {
-				alertMsg("alert-danger","On,snap!");
-			}
-		}).always(function(){
-			btn.removeAttr("disabled");
-			btn.children("i").removeClass();
-		});
-	});
+        $form = $('#empForm');
+        $form.bootstrapValidator({
+            // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                empName: {
+                    message: 'The empName is not valid',
+                    validators: {
+                        notEmpty: {
+                            message: 'The empName is required and cannot be empty'
+                        },
+                        stringLength: {
+                            min: 1,
+                            max: 50,
+                            message: 'The empName must be more than 1 and less than 50 characters long'
+                        }
+            /*  regexp: {
+                            regexp: /^[a-zA-Z0-9]+$/,
+                            message: 'The username can only consist of alphabetical and number'
+                        }*/
+                    }
+                },
+                companyId: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The company is required and cannot be empty'
+                        }
+                    }
+                },
+                companyName: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The companyName is required and cannot be empty'
+                        }
+                    }
+                },
+                status: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The status is required'
+                        }
+                    }
+                },
+                photo: {
+                    excluded :false,
+                    trigger:"change",
+                    validators: {
+                        notEmpty: {
+                            message: 'The photo is required and cannot be empty'
+                        }
+                    }
+                },
+                comment: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The comment is required and cannot be empty'
+                        }
+                    },
+                    stringLength: {
+                        min: 1,
+                        max: 500,
+                        message: 'The comment must be more than 1 and less than 50 characters long'
+                    }
+                }
+            }
+        })
+        .on('success.form.bv', function(e) {
+            // Prevent form submission
+            e.preventDefault();
+            // Get the form instance
+            var $form = $(e.target);
+            // Get the BootstrapValidator instance
+            var bv = $form.data('bootstrapValidator');
+
+            $('#errors').addClass("hidden");
+
+            // Use Ajax to submit form data
+            $.post($form.attr('action'), $form.serialize(), function(result) {
+                if(result.status=="success"){
+                    window.location.href="/select/index";
+                }else{
+                    $("#errors").text(result.msg);
+                    $('#errors').removeClass("hidden");
+                    //reset the form
+                    $form.data('bootstrapValidator').resetForm();
+                }
+            }, 'json');
+        })
+        .find('input[name="status"], input[name="companyId"]')
+        // Init iCheck elements
+        .iCheck({
+            checkboxClass: 'icheckbox_square-red',
+            radioClass: 'iradio_square-red'
+        })
+        // Called when the radios/checkboxes are changed
+        .on('ifChanged', function(e) {
+            // Get the field name
+            var field = $(this).attr('name');
+            $form.bootstrapValidator('revalidateField', field);
+        });
+});

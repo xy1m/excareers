@@ -1,41 +1,46 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<link href="/static/bootstrap3.03/css/signin.css" rel="stylesheet">	
-<%@ include file="/common/header.jsp"%>
-    <form class="form-signin" role="form">
-    	<p>建议使用LinkedIn登录</p>
-    	<button class="btn btn-primary"><script type="IN/Login" data-onAuth="onLogin" data></script></button>
-     
-    </form>
-<%@ include file="/common/footer.jsp"%>
-
-<script type="text/javascript" src="http://platform.linkedin.com/in.js">
-  api_key: 75behd12ztnmus
-</script>
-<script>
-function onLogin(){
-	IN.API.Profile("me").fields(["id","first-name","last-name","picture-url","email-address","phone-numbers","last-modified-timestamp","positions:(company:(id,name))"]).result(function(result) { 
-		var data = result.values[0];
-		var params={};
-		$.each(data,function(i,v){
-			if(i == "positions" || i == "phoneNumbers"){
-				params[i]=JSON.stringify(v.values);
-			}else{
-				params[i]=v;
-			}
-		});
-		$.ajax({
-		    type : 'POST',
-		    url : "/linkedin/login?_=" + new Date().getTime(),
-		    data : params ,
-		    dataType : "json",
-		    success : function(result) {
-		    	window.location.href="/employee/write";
-		    },
-		    error:function(){
-		    	alert('error!');
-		    }
-		});
-	});
-}
-</script>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<jsp:include page="/common/header.jsp" flush="true">
+  <jsp:param name="title" value="Login ExCareers" />
+</jsp:include>
+</head>
+<body>
+  <div id="wrap">
+    <%@ include file="/common/navbar.jsp"%>  
+      <div class="container">
+        <div class="col-md-6 col-md-offset-3">
+          <div class="panel panel-warning">
+            <div class="panel-heading">
+              <h3 class="panel-title">Login is comming soon!Now support LinkedIn</h3>
+            </div>
+            <div class="panel-body">
+              <div class="col-md-8 col-md-offset-2">
+                <form class="form-horizontal" action="/user/login" method="POST" role="form">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+                      <input class="form-control" name="username" type="text" placeholder="Email address">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                      <input class="form-control" name="password" type="password" placeholder="Password">
+                    </div>
+                  </div>
+                  <div class="form-group pull-right">
+                    <script type="IN/Login" data-onAuth="onLogin"></script>
+                    <button class="btn btn-primary" type="submit">Login</button>
+                    <a href="/n/user/regist" class="btn btn-success">RegistNow</a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <%@ include file="/common/footer.jsp"%>
+  <script type="text/javascript" src="http://platform.linkedin.com/in.js">api_key: 75behd12ztnmus</script>
+  <script src="/static/js/min/login.min.js"></script>
+</body>
+</html>

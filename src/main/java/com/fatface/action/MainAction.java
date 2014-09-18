@@ -66,22 +66,22 @@ public class MainAction {
 
     @RequestMapping(value = "/employee/add")
     @ResponseBody
-    public Map<String, Object> addEmployee(String empname, Integer companyId, String companyName,
-                                           Integer status, String pictureUrl, String comment) {
+    public Map<String, Object> addEmployee(String empName, Integer companyId, String companyName,
+                                           Integer status, String photo, String comment) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("status", "error");
-        if (StringUtils.isBlank(empname) || StringUtils.isBlank(companyName)
-            || StringUtils.isBlank(pictureUrl)) {
-            map.put("msg", "上传信息不全");
+        if (StringUtils.isBlank(empName) || StringUtils.isBlank(companyName)
+            || StringUtils.isBlank(photo)) {
+            map.put("msg", "Info is not enough!");
             return map;
         }
         //3 雇员信息
         Employee emp = new Employee();
-        emp.setName(empname);
+        emp.setName(empName);
         emp.setCompanyId(companyId);
         emp.setCompanyName(companyName);
         emp.setStatus(status);
-        emp.setPic(pictureUrl);
+        emp.setPic(photo);
         emp.setComment(comment);
         int count = employeeMapper.insertSelective(emp);
         if (count > 0) {
