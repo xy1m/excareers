@@ -1,4 +1,4 @@
-package com.fatface.util;
+/*package com.fatface.util;
 
 import org.scribe.builder.api.DefaultApi20;
 import org.scribe.extractors.AccessTokenExtractor;
@@ -35,3 +35,4 @@ public class LinkedIn2Api extends DefaultApi20 {
     }
 
 }
+*/

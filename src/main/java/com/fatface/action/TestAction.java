@@ -1,4 +1,4 @@
-package com.fatface.action;
+/*package com.fatface.action;
 
 import java.util.UUID;
 
@@ -107,3 +107,4 @@ public class TestAction {
         return response.getBody();
     }
 }
+*/

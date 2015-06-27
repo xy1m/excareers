@@ -7,9 +7,9 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <meta name="description" content="ExCareers is a real website for memory of your past jobs">
-  <meta name="keywords" content="past job,pre careers,excareers,jobhunt">
-  <meta name="author" content="zhenpengzhang@sohu-inc.com">
+  <meta name="description" content="${param.description }">
+  <meta name="keywords" content="${param.keywords }">
+  <meta name="author" content="zhangzhpeng@gmail.com">
   <link rel="icon" type="image/png" href="/static/img/sheep.png">
 
   <title>${param.title}</title>

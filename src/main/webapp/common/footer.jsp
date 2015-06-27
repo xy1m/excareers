@@ -9,7 +9,7 @@
           <li><a target="_blank" href="javascript:void(0);">AD</a></li>
         </ul>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <h4>FriendLink</h4>
         <ul class="list-unstyled">
           <li><i class="fa fa-link"></i> <a target="_blank" href="http://v3.bootcss.com/">Bootstrap</a></li>
@@ -18,7 +18,7 @@
           <li><i class="fa fa-link"></i> <a target="_blank" href="http://fontawesome.io/">Font-awesome</a></li>
         </ul>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <h4>Contract</h4>
         <ul class="list-unstyled">
           <li><i class="fa fa-envelope"></i> Email:<a href="mailto:zhangzhpeng@gmail.com">zhangzhpeng</a></li>
@@ -29,7 +29,7 @@
       </div>
     </div>
     <div class="row">
-      <p class="text-center">&copy;Copyright 2014 FatFaceSheep. All rights reserved.</p>
+      <p class="text-center">&copy;Copyright 2014 excareers. All rights reserved.</p>
     </div>
   </div>
 </footer>
