@@ -1,0 +1,92 @@
+body>.container{
+  font-family: 'RobotoDraft','Roboto',sans-serif;
+  font-size: 17px;
+}
+
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6 {
+  margin-top: 0;
+  color: #337ab7;
+}
+
+/*
+ * Blog posts
+ */
+
+.blog-post {
+  margin-bottom: 40px;
+}
+
+.blog-post-title {
+  margin-bottom: 10px;
+}
+
+.blog-post-meta,
+.blog-post-tags {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: #999;
+  padding-left: 0;
+  list-style: none;
+}
+
+.meta-item,
+.tag-item {
+  display: inline-block;
+  padding-right: 5px;
+}
+
+.meta-item>span {
+  margin-left: 0px;
+  margin-right: 5px;
+}
+
+.comment {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-bottom-style: solid;
+  border-bottom-width: medium;
+  border-color: #eee;
+}
+
+.comment-avatar {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.comment-avatar>img {
+  max-width: 80px;
+  max-height: 80px;
+}
+
+.comment-user {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.comment-time{
+  margin-bottom: 10px;
+  color: #999;
+  font-weight: bold;
+}
+
+.comment-body {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* Pagination */
+.pager {
+  margin-bottom: 40px;
+  text-align: center;
+}
+.pager > li > a {
+  text-align: center;
+}

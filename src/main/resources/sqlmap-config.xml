@@ -6,7 +6,5 @@
 		<!-- changes from the defaults -->
 		<setting name="lazyLoadingEnabled" value="false" />
 	</settings>
-	<typeAliases>
-	</typeAliases>
 </configuration>
 

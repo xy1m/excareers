@@ -19,12 +19,14 @@
      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
      http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
-	<!-- 定时器开关 start @Scheduled -->
+	<!-- start @Scheduled -->
 	<task:annotation-driven />
-	<!-- 定时器开关 end -->
-	<!--将dataSource的内容自动注入 -->
+	
+	<context:component-scan base-package="com.excareers" /> 
+	
 	<context:property-placeholder location="classpath*:*.properties" />
-	<!-- 数据源 -->
+	
+	<!-- datasource -->
 	<bean id="commonDataSourceProperties" abstract="true"
 		destroy-method="close">
 		<property name="driverClass" value="${jdbc.driver.mysql}" />
@@ -32,28 +34,28 @@
 		<property name="user" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
 		<property name="initialPoolSize" value="5" />
-		<property name="minPoolSize" value="10" />
+		<property name="minPoolSize" value="5" />
 		<property name="maxPoolSize" value="25" />
 		<property name="maxStatements" value="200" />
-		<property name="maxIdleTime" value="25000" />
+		<property name="maxIdleTime" value="600" />
 		<property name="acquireIncrement" value="5" />
 
 		<property name="acquireRetryAttempts" value="30" />
 		<property name="acquireRetryDelay" value="1000" />
 		<property name="testConnectionOnCheckin" value="true" />
-		<property name="automaticTestTable" value="c3p0TestTable" />
-		<property name="idleConnectionTestPeriod" value="18000" />
+		<property name="automaticTestTable" value="c3p0testtable" />
+		<property name="idleConnectionTestPeriod" value="60" />
 		<property name="checkoutTimeout" value="3000" />
 	</bean>
 
-	<!-- 数据源 master -->
+	<!-- master -->
 	<bean id="targetDataSource" parent="commonDataSourceProperties"
 		class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="jdbcUrl" value="${jdbc.url}" />
 		<property name="user" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
 	</bean>
-	<!-- 数据源 slave -->
+	<!-- slave -->
 	<bean id="targetDataSource-read" parent="commonDataSourceProperties"
 		class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="jdbcUrl" value="${jdbc.url.read}" />
@@ -61,27 +63,7 @@
 		<property name="password" value="${jdbc.password.read}" />
 	</bean>
 
-	<!-- <bean id="commonDataSourceProperties" abstract="true" destroy-method="close"> 
-		数据库驱动 <property name="driverClass" value="${jdbc.driver.mysql}" /> <property 
-		name="jdbcUrl" value="${jdbc.url}" /> <property name="username" value="${jdbc.username}" 
-		/> <property name="password" value="${jdbc.password}" /> 检查数据库连接池中空闲连接的间隔时间，单位是分，默认值：240，如果要取消则设置为0 
-		<property name="idleConnectionTestPeriod" value="240" /> 连接池中未使用的链接最大存活时间，单位是分，默认值：60，如果要永远存活设置为0 
-		<property name="idleMaxAge" value="60" /> 每个分区最大的连接数 <property name="maxConnectionsPerPartition" 
-		value="5" /> 每个分区最小的连接数 <property name="minConnectionsPerPartition" value="5" 
-		/> 分区数 ，默认值2，最小1，推荐3-4，视应用而定 <property name="partitionCount" value="4" /> 
-		每次去拿数据库连接的时候一次性要拿几个,默认值：2 <property name="acquireIncrement" value="2" /> 
-		缓存prepared statements的大小，默认值：0 <property name="statementsCacheSize" value="30" 
-		/> 每个分区释放链接助理进程的数量，默认值：3，除非你的一个数据库连接的时间内做了很多工作，不然过多的助理进程会影响你的性能 <property 
-		name="releaseHelperThreads" value="3" /> </bean> 数据源 master <bean id="targetDataSource" 
-		parent="commonDataSourceProperties" class="com.jolbox.bonecp.BoneCPDataSource" 
-		destroy-method="close"> <property name="jdbcUrl" value="${jdbc.url}" /> <property 
-		name="username" value="${jdbc.username}" /> <property name="password" value="${jdbc.password}" 
-		/> </bean> 数据源 slave <bean id="targetDataSource-read" parent="commonDataSourceProperties" 
-		class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close"> <property 
-		name="jdbcUrl" value="${jdbc.url.read}" /> <property name="username" value="${jdbc.username.read}" 
-		/> <property name="password" value="${jdbc.password.read}" /> </bean> -->
-
-	<bean id="readWriteDataSource" class="com.fatface.datasource.ReadWriteDataSource">
+	<bean id="readWriteDataSource" class="com.excareers.datasource.ReadWriteDataSource">
 		<property name="writeDataSource" ref="targetDataSource" />
 		<property name="readDataSourceMap">
 			<map>
@@ -90,42 +72,23 @@
 		</property>
 	</bean>
 
-	<bean id="readWriteDataSourceTransactionProcessor" class="com.fatface.datasource.ReadWriteDataSourceProcessor">
+	<bean id="readWriteDataSourceTransactionProcessor" class="com.excareers.datasource.ReadWriteDataSourceProcessor">
 		<property name="forceChoiceReadWhenWrite" value="true" />
 	</bean>
 
-	<bean id="dataSource"
-		class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
 		<property name="targetDataSource">
 			<ref local="readWriteDataSource" />
 		</property>
 	</bean>
-
-	<!-- <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close"> 
-		数据库驱动 <property name="driverClass" value="${jdbc.driver.mysql}" /> <property 
-		name="jdbcUrl" value="${jdbc.url}" /> <property name="username" value="${jdbc.username}" 
-		/> <property name="password" value="${jdbc.password}" /> 检查数据库连接池中空闲连接的间隔时间，单位是分，默认值：240，如果要取消则设置为0 
-		<property name="idleConnectionTestPeriod" value="240" /> 连接池中未使用的链接最大存活时间，单位是分，默认值：60，如果要永远存活设置为0 
-		<property name="idleMaxAge" value="60" /> 每个分区最大的连接数 <property name="maxConnectionsPerPartition" 
-		value="20" /> 每个分区最小的连接数 <property name="minConnectionsPerPartition" value="20" 
-		/> 分区数 ，默认值2，最小1，推荐3-4，视应用而定 <property name="partitionCount" value="4" /> 
-		每次去拿数据库连接的时候一次性要拿几个,默认值：2 <property name="acquireIncrement" value="2" /> 
-		缓存prepared statements的大小，默认值：0 <property name="statementsCacheSize" value="30" 
-		/> 每个分区释放链接助理进程的数量，默认值：3，除非你的一个数据库连接的时间内做了很多工作，不然过多的助理进程会影响你的性能 <property 
-		name="releaseHelperThreads" value="3" /> </bean> -->
-	<!-- define the SqlSessionFactory, notice that configLocation is not needed 
-		when you use MapperFactoryBean -->
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="configLocation" value="classpath:sqlmap-config.xml" />
-	</bean>
-	<!-- ================================事务相关控制================================================= -->
-	<!-- transaction manager, use JtaTransactionManager for global tx -->
-	<bean id="transactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-	<!-- 拦截器方式配置事物 -->
+  
+  <!-- transaction manager, use JtaTransactionManager for global tx -->
+  <bean id="transactionManager"
+    class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="dataSource" />
+  </bean>
+  
+	<!-- Advice for transaction -->
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="add*" propagation="REQUIRED" />
@@ -149,20 +112,43 @@
 	<!-- ensure that the above transactional advice runs for any execution of 
 		an operation defined by the FooService interface -->
 	<aop:config proxy-target-class="true">
-		<aop:pointcut id="fooServiceOperation"
-			expression="execution(* com.fatface.service..*.*(..))" />
+		<aop:pointcut id="fooServiceOperation" expression="execution(* com.excareers.service..*.*(..))" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="fooServiceOperation" />
-
-		<!-- 通过AOP切面实现读/写库选择 -->
+		<!-- AOP choose read or write -->
 		<aop:aspect order="-2147483648" ref="readWriteDataSourceTransactionProcessor">
 			<aop:around pointcut-ref="fooServiceOperation" method="determineReadOrWriteDB" />
 		</aop:aspect>
 	</aop:config>
-
-	<!-- 自动扫描mybatis mapper 接口 如果有多个可以用逗号或者分号分割开来 -->
+	
+  <!-- define the SqlSessionFactory, notice that configLocation is not needed 
+    when you use MapperFactoryBean -->
+  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <property name="dataSource" ref="dataSource" />
+    <property name="configLocation" value="classpath:sqlmap-config.xml" />
+  </bean>
+  
+	<!-- automatic scan mapper -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.fatface.dao" />
-		<property name="markerInterface" value="com.fatface.dao.SqlMapper" />
+		<property name="basePackage" value="com.excareers.dao" />
+		<property name="markerInterface" value="com.excareers.dao.SqlMapper" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
+	
+	<!-- shiro异常处理 -->
+	<bean class="com.excareers.auth.DefaultExceptionHandler"/>
+	<!-- 配置国际化资源文件路径 -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+	<property name="basename">
+	<!-- 定义消息资源文件的相对路径 -->
+		<value>messages/message</value>
+	</property>
+	</bean>
+	<!-- 基于Cookie的本地化解析器 -->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="cookieMaxAge" value="604800"/>
+		<property name="defaultLocale" value="zh_CN"/>
+		<property name="cookieName" value="Language"></property>
+	</bean>
+	<!-- 基于Session的本地化解析器 -->
+	<!--<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />-->
 </beans>

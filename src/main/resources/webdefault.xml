@@ -263,9 +263,7 @@
   <!--   If you get an error reporting that jikes can't use UTF-8 encoding, -->
   <!--   try setting the init parameter "javaEncoding" to "ISO-8859-1".     -->
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
-  <servlet
-    id="jsp"
-  >
+  <servlet id="jsp" >
     <servlet-name>jsp</servlet-name>
     <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
     <init-param>

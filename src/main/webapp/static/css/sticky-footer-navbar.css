@@ -1,0 +1,41 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+	position: relative;
+	min-height: 100%;
+}
+
+body { /* Margin bottom by footer height */
+	margin-top: 70px;
+	margin-bottom: 200px;
+}
+
+.footer {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	/* Set the fixed height of the footer here */
+	height: auto;
+	padding-top: 10px;
+	background-color: #eee;
+}
+
+.footer>.container {
+	padding-right: 15px;
+	padding-left: 15px;
+}
+
+.dropdown:hover .dropdown-menu {
+	display: block;
+	margin-top: 0;
+}
+
+.avatar {
+	max-width: 20px;
+	max-height: 20px;
+}
+
+.img_200 {
+	max-width: 200px;
+	max-height: 200px;
+}

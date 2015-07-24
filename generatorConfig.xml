@@ -10,38 +10,43 @@
 		</commentGenerator>
 
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://192.168.1.100:3306/mole" userId="root"
+			connectionURL="jdbc:mysql://127.0.0.1:3306/excareers" userId="root"
 			password="root" />
 		<!-- data -->
-		<javaModelGenerator targetPackage="com.fatface.data"
-			targetProject="resignwall" />
-        <!-- mappper -->
-        <sqlMapGenerator targetPackage="com.fatface.dao"
-            targetProject="resignwall" />
-        <!-- dto -->
-        <javaClientGenerator targetPackage="com.fatface.dao"
-            targetProject="resignwall" type="XMLMAPPER">
-            <property name="exampleMethodVisibility" value="private" />
-            <property name="rootInterface" value="com.fatface.dao.SqlMapper" />
-        </javaClientGenerator>
-
-<!-- 		<table tableName="user" enableSelectByExample="false"
-			enableDeleteByExample="false" enableCountByExample="false"
-			enableUpdateByExample="false">
-			<generatedKey column="id" sqlStatement="MySql" identity="true"
-				type="post" />
-		</table>
+		<javaModelGenerator targetPackage="com.excareers.data" targetProject="excareers" />
+		<!-- mappper -->
+		<sqlMapGenerator targetPackage="com.excareers.dao" targetProject="excareers" />
+		<!-- dto -->
+		<javaClientGenerator targetPackage="com.excareers.dao"
+			targetProject="excareers" type="XMLMAPPER">
+			<property name="exampleMethodVisibility" value="private" />
+			<property name="rootInterface" value="com.excareers.dao.SqlMapper" />
+		</javaClientGenerator>
 		<table tableName="employee" enableSelectByExample="false"
 			enableDeleteByExample="false" enableCountByExample="false"
 			enableUpdateByExample="false">
 			<generatedKey column="id" sqlStatement="MySql" identity="true"
 				type="post" />
-		</table> -->
-		<table tableName="product" enableSelectByExample="false"
+		</table>
+<!-- 		<table tableName="sys_users" enableSelectByExample="false"
 			enableDeleteByExample="false" enableCountByExample="false"
 			enableUpdateByExample="false">
-			<generatedKey column="id" sqlStatement="MySql" identity="true"
-				type="post" />
+			<generatedKey column="id" sqlStatement="MySql" identity="true" type="post" />
 		</table>
+   <table tableName="articles" enableSelectByExample="false"
+      enableDeleteByExample="false" enableCountByExample="false"
+      enableUpdateByExample="false">
+      <generatedKey column="id" sqlStatement="MySql" identity="true" type="post" />
+    </table> -->
+<!-- 		<table tableName="sys_roles" enableSelectByExample="false"
+      enableDeleteByExample="false" enableCountByExample="false"
+      enableUpdateByExample="false">
+      <generatedKey column="id" sqlStatement="MySql" identity="true" type="post" />
+    </table>
+    <table tableName="sys_permissions" enableSelectByExample="false"
+      enableDeleteByExample="false" enableCountByExample="false"
+      enableUpdateByExample="false">
+      <generatedKey column="id" sqlStatement="MySql" identity="true" type="post" />
+    </table> -->
 	</context>
 </generatorConfiguration>

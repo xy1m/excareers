@@ -1,11 +1,20 @@
 $(document).ready(function() {
-    $('#registrationForm').bootstrapValidator({
+    $('#joinForm').bootstrapValidator({
         // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+    	exclued: [':disabled', ':hidden', ':not(:visible)'],
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
             validating: 'glyphicon glyphicon-refresh'
         },
+        live: "disabled",
+        message: "Your input is not valid",
+        submitButtons: [type="submit"],
+        submitHandler: function(validator, form, submitButton){
+        	validator.defaultSubmit();
+        },
+        threshold:null,
+        trigger:null,
         fields: {
             username: {
                 message: 'The username is not valid',
@@ -21,12 +30,14 @@ $(document).ready(function() {
                     regexp: {
                         regexp: /^[a-zA-Z0-9]+$/,
                         message: 'The username can only consist of alphabetical and number'
-                    },
-                    different: {
-                        field: 'password',
-                        message: 'The username and password cannot be the same as each other'
-                    }
-                    
+                    }/*,
+                	remote: {
+                        message: 'The name is not available',
+                        url: '/user/avaliable',
+                        data: {
+                            username: 'username'
+                        }
+                    }*/
                 }
             },
             email: {
@@ -35,7 +46,7 @@ $(document).ready(function() {
                         message: 'The email address is required and cannot be empty'
                     },
                     emailAddress: {
-                        message: 'The email address is not a valid'
+                        message: 'The email address is not valid'
                     }
                 }
             },
@@ -44,13 +55,25 @@ $(document).ready(function() {
                     notEmpty: {
                         message: 'The password is required and cannot be empty'
                     },
-                    different: {
-                        field: 'username',
-                        message: 'The password cannot be the same as username'
-                    },
                     stringLength: {
                         min: 8,
-                        message: 'The password must have at least 8 characters'
+                        max: 20,
+                        message: 'The password must be more than 6 and less than 20 characters long'
+                    },
+                    regexp: {
+                        regexp: /^[a-zA-Z0-9]+$/,
+                        message: 'The password can only consist of alphabetical and number'
+                    }
+                }
+            },
+            pwconfirm: {
+                validators: {
+                    notEmpty: {
+                        message: 'The password is required and cannot be empty'
+                    },
+                    identical: {
+                        field: 'password',
+                        message: 'Your confirm password is not same with password'
                     }
                 }
             }

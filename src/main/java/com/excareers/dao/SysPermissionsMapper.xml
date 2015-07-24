@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.excareers.dao.SysPermissionsMapper" >
+  <resultMap id="BaseResultMap" type="com.excareers.data.SysPermissions" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="permission" property="permission" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="avaliable" property="avaliable" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, permission, description, avaliable
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_permissions
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_permissions
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.excareers.data.SysPermissions" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_permissions (permission, description, avaliable
+      )
+    values (#{permission,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{avaliable,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.excareers.data.SysPermissions" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_permissions
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="permission != null" >
+        permission,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="avaliable != null" >
+        avaliable,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="permission != null" >
+        #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="avaliable != null" >
+        #{avaliable,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.excareers.data.SysPermissions" >
+    update sys_permissions
+    <set >
+      <if test="permission != null" >
+        permission = #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="avaliable != null" >
+        avaliable = #{avaliable,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.excareers.data.SysPermissions" >
+    update sys_permissions
+    set permission = #{permission,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      avaliable = #{avaliable,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
